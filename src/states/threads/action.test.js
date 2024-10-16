@@ -1,129 +1,57 @@
-/**
- * Scenario testing
- *
- * - async actions
- *   - should dispatch receiveThreadDetail and hideLoading on asyncReceiveThreadDetail success
- *   - should dispatch addComment and hideLoading on asyncCommentThreadDetail success
- *   - should dispatch toggleLikeCommentThread on asyncToogleLikeCommentThread success
- *   - should dispatch toggleNeutralThread on asyncToogleNeutralCommentThread success
- *   - should dispatch toggleDisLikeCommentThread on asyncToogleDisLikeCommentThread success
- */
+import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
+import api from '../../utils/api'; 
+import {
+  asyncAddThread,
+  asyncToggleLikeThread,
+  ActionType,
+} from './action';
 
-import { 
-    asyncReceiveThreadDetail, 
-    asyncCommentThreadDetail, 
-    asyncToogleLikeCommentThread,
-    asyncToogleNeutralCommentThread,
-    asyncToogleDisLikeCommentThread 
-  } from './action';
-  import { showLoading, hideLoading } from 'react-redux-loading-bar';
-  import api from '../../utils/api';
-  
-  jest.mock('../../utils/api');
-  jest.mock('react-redux-loading-bar', () => ({
-    showLoading: jest.fn(),
-    hideLoading: jest.fn(),
-  }));
-  
-  describe('async actions', () => {
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-  
-    it('should dispatch receiveThreadDetail and hideLoading on asyncReceiveThreadDetail success', async () => {
-      // arrange
-      const dispatch = jest.fn();
-      const mockThreadDetail = { id: 'thread-1', title: 'Thread 1', comments: [] };
-      api.getThreadDetail.mockResolvedValue(mockThreadDetail);
-  
-      // action
-      await asyncReceiveThreadDetail('thread-1')(dispatch);
-  
-      // assert
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(api.getThreadDetail).toHaveBeenCalledWith('thread-1');
-      expect(dispatch).toHaveBeenCalledWith({
-        type: 'RECEIVE_THREAD_DETAIL',
-        payload: {
-          threadDetail: mockThreadDetail,
-        },
-      });
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-    });
-  
-    it('should dispatch addComment and hideLoading on asyncCommentThreadDetail success', async () => {
-      // arrange
-      const dispatch = jest.fn();
-      const mockComment = { id: 'comment-1', content: 'This is a new comment' };
-      api.createCommentThread.mockResolvedValue(mockComment);
-  
-      // action
-      await asyncCommentThreadDetail('thread-1', 'This is a new comment')(dispatch);
-  
-      // assert
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(api.createCommentThread).toHaveBeenCalledWith({ threadId: 'thread-1', content: 'This is a new comment' });
-      expect(dispatch).toHaveBeenCalledWith({
-        type: 'ADD_COMMENT',
-        payload: {
-          comment: mockComment,
-        },
-      });
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-    });
-  
-    it('should dispatch toggleLikeCommentThread on asyncToogleLikeCommentThread success', async () => {
-      // arrange
-      const dispatch = jest.fn();
-      api.toggleLikeCommentThread.mockResolvedValue(true);
-  
-      // action
-      await asyncToogleLikeCommentThread('thread-1', 'comment-1')(dispatch);
-  
-      // assert
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(dispatch).toHaveBeenCalledWith({
-        type: 'TOGGLE_COMMENT_LIKE_THREAD',
-        payload: { threadId: 'thread-1' },
-      });
-      expect(api.toggleLikeCommentThread).toHaveBeenCalledWith('thread-1', 'comment-1');
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-    });
-  
-    it('should dispatch toggleNeutralThread on asyncToogleNeutralCommentThread success', async () => {
-      // arrange
-      const dispatch = jest.fn();
-      api.toggleNeutralCommentThread.mockResolvedValue(true);
-  
-      // action
-      await asyncToogleNeutralCommentThread('thread-1', 'comment-1')(dispatch);
-  
-      // assert
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(dispatch).toHaveBeenCalledWith({
-        type: 'TOGGLE_COMMENT_NEUTRAL_THREAD',
-        payload: { threadId: 'thread-1', commentId: 'comment-1' },
-      });
-      expect(api.toggleNeutralCommentThread).toHaveBeenCalledWith('thread-1', 'comment-1');
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-    });
-  
-    it('should dispatch toggleDisLikeCommentThread on asyncToogleDisLikeCommentThread success', async () => {
-      // arrange
-      const dispatch = jest.fn();
-      api.toggleDisLikeCommentThread.mockResolvedValue(true);
-  
-      // action
-      await asyncToogleDisLikeCommentThread('thread-1', 'comment-1')(dispatch);
-  
-      // assert
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(dispatch).toHaveBeenCalledWith({
-        type: 'TOGGLE_COMMENT_DISLIKE_THREAD',
-        payload: { threadId: 'thread-1', commentId: 'comment-1' },
-      });
-      expect(api.toggleDisLikeCommentThread).toHaveBeenCalledWith('thread-1', 'comment-1');
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-    });
+describe('Async Actions', () => {
+  beforeEach(() => {
+    // Reset mock sebelum setiap pengujian
+    vi.clearAllMocks();
   });
-  
+
+  it('should create ADD_THREAD action after successfully adding a thread', async () => {
+    const newThread = {
+      title: 'Test Thread',
+      category: 'General',
+      body: 'This is a test thread.',
+    };
+
+    // Mocking api.createThread
+    api.createThread = vi.fn().mockResolvedValue(newThread);
+
+    const dispatch = vi.fn(); // Mock dispatch
+    const thunk = asyncAddThread(newThread);
+
+    await thunk(dispatch); // Jalankan thunk
+
+    expect(dispatch).toHaveBeenCalledWith(showLoading());
+    expect(dispatch).toHaveBeenCalledWith({
+      type: ActionType.ADD_THREAD,
+      payload: { thread: newThread },
+    });
+    expect(dispatch).toHaveBeenCalledWith(hideLoading());
+  });
+
+  it('should handle error in asyncToggleLikeThread', async () => {
+    const threadId = 'thread123';
+
+    // Mocking api.toggleLikeThread
+    api.toggleLikeThread = vi.fn().mockRejectedValue(new Error('Failed to like the thread'));
+
+    const dispatch = vi.fn(); // Mock dispatch
+    const thunk = asyncToggleLikeThread(threadId);
+
+    await thunk(dispatch); // Jalankan thunk
+
+    expect(dispatch).toHaveBeenCalledWith(showLoading());
+    expect(dispatch).toHaveBeenCalledWith({
+      type: ActionType.TOGGLE_LIKE_THREAD,
+      payload: { vote: { threadId } }, // Payload sesuai dengan yang ada di action creator
+    });
+    expect(dispatch).toHaveBeenCalledWith(hideLoading());
+  });
+});

@@ -1,5 +1,5 @@
 /**
- * Skenario testing
+ * Testing scenarios:
  *
  * - LoginInput component
  *   - should handle email typing correctly
@@ -24,48 +24,49 @@ describe('LoginInput component', () => {
   });
 
   it('should handle email typing correctly', async () => {
-    // Arrange: Render the LoginInput component
+    // Arrange  
     render(<LoginInput login={() => {}} />);
     const emailInput = await screen.getByPlaceholderText('Email');
 
-    // Act: Simulate typing into the email input field
+    // Action
     await userEvent.type(emailInput, 'test@example.com');
 
-    // Assert: Ensure the email input value is updated correctly
+    // Assert
     expect(emailInput).toHaveValue('test@example.com');
   });
 
   it('should handle password typing correctly', async () => {
-    // Arrange: Render the LoginInput component
+    // Arrange
     render(<LoginInput login={() => {}} />);
     const passwordInput = await screen.getByPlaceholderText('Password');
 
-    // Act: Simulate typing into the password input field
-    await userEvent.type(passwordInput, 'password123');
+    // Action
+    await userEvent.type(passwordInput, 'passwordtest');
 
-    // Assert: Ensure the password input value is updated correctly
-    expect(passwordInput).toHaveValue('password123');
+    // Assert
+    expect(passwordInput).toHaveValue('passwordtest');
   });
 
   it('should call login function when login button is clicked', async () => {
-    // Arrange: Create a mock function for login and render the LoginInput component
+    // Arrange
     const mockLogin = vi.fn();
     render(<LoginInput login={mockLogin} />);
-
-    // Find the email and password inputs, and the login button
     const emailInput = await screen.getByPlaceholderText('Email');
-    const passwordInput = await screen.getByPlaceholderText('Password');
-    const loginButton = await screen.getByRole('button', { name: 'Login' });
-
-    // Act: Simulate typing in the email and password fields and clicking the login button
     await userEvent.type(emailInput, 'test@example.com');
-    await userEvent.type(passwordInput, 'password123');
+
+    const passwordInput = await screen.getByPlaceholderText('Password');
+    await userEvent.type(passwordInput, 'passwordtest');
+
+    const loginButton = await screen.getByRole('button', { name: 'Login' });
+   
     await userEvent.click(loginButton);
 
-    // Assert: Ensure the login function is called with the correct data
+    // Action
+
+    // Assert
     expect(mockLogin).toHaveBeenCalledWith({
       email: 'test@example.com',
-      password: 'password123',
+      password: 'passwordtest',
     });
   });
 });

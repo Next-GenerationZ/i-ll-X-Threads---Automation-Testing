@@ -66,20 +66,20 @@ function asyncAddThread({ title, category, body }) {
     dispatch(hideLoading());
   };
 }
-
-function asyncToogleLikeThread(threadId) {
+function asyncToggleLikeThread(threadId) {
   return async (dispatch) => {
     dispatch(showLoading());
-    dispatch(toggleLikeThreadActionCreator({ threadId }));
+    dispatch(toggleLikeThreadActionCreator({ vote: { threadId } })); 
     try {
       await api.toggleLikeThread(threadId);
     } catch (error) {
-      dispatch(toggleLikeThreadActionCreator({ threadId }));
+      dispatch(toggleLikeThreadActionCreator({ vote: { threadId } })); 
     }
     dispatch(hideLoading());
   };
 }
-function asyncToogleNeutralThread(threadId) {
+
+function asyncToggleNeutralThread(threadId) {
   return async (dispatch) => {
     dispatch(showLoading());
     dispatch(toggleNeutralThreadActionCreator({ threadId }));
@@ -92,7 +92,7 @@ function asyncToogleNeutralThread(threadId) {
     dispatch(hideLoading());
   };
 }
-function asyncToogleDisLikeThread(threadId) {
+function asyncToggleDisLikeThread(threadId) {
   return async (dispatch) => {
     dispatch(showLoading());
     dispatch(toggleDisLikeThreadActionCreator({ threadId }));
@@ -114,7 +114,7 @@ export {
   toggleNeutralThreadActionCreator,
   toggleDisLikeThreadActionCreator,
   asyncAddThread,
-  asyncToogleLikeThread,
-  asyncToogleNeutralThread,
-  asyncToogleDisLikeThread,
+  asyncToggleLikeThread,
+  asyncToggleNeutralThread,
+  asyncToggleDisLikeThread,
 };

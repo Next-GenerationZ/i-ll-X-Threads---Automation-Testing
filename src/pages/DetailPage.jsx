@@ -7,15 +7,15 @@ import parse from 'html-react-parser';
 import {
   asyncCommentThreadDetail,
   asyncReceiveThreadDetail,
-  asyncToogleDisLikeCommentThread,
-  asyncToogleLikeCommentThread,
-  asyncToogleNeutralCommentThread,
+  asyncToggleDisLikeCommentThread,
+  asyncToggleLikeCommentThread,
+  asyncToggleNeutralCommentThread,
 } from '../states/threadDetail/action';
 import Loading from '../components/Loading';
 import {
-  asyncToogleDisLikeThread,
-  asyncToogleLikeThread,
-  asyncToogleNeutralThread,
+  asyncToggleDisLikeThread,
+  asyncToggleLikeThread,
+  asyncToggleNeutralThread,
 } from '../states/threads/action';
 
 function DetailPage() {
@@ -51,38 +51,38 @@ function DetailPage() {
 
   const onLike = async (id, isLiked) => {
     if (!isLiked) {
-      await dispatch(asyncToogleLikeThread(id));
+      await dispatch(asyncToggleLikeThread(id));
       dispatch(asyncReceiveThreadDetail(id));
     } else {
-      dispatch(asyncToogleNeutralCommentThread(id));
+      dispatch(asyncToggleNeutralCommentThread(id));
       dispatch(asyncReceiveThreadDetail(id));
     }
   };
   const onDisLike = async (id, isDisLiked) => {
     if (!isDisLiked) {
-      await dispatch(asyncToogleDisLikeThread(id));
+      await dispatch(asyncToggleDisLikeThread(id));
       dispatch(asyncReceiveThreadDetail(id));
     } else {
-      dispatch(asyncToogleNeutralThread(id));
+      dispatch(asyncToggleNeutralThread(id));
       dispatch(asyncReceiveThreadDetail(id));
     }
   };
 
   const onCommentLike = async (commentid, isCommentLiked) => {
     if (!isCommentLiked) {
-      await dispatch(asyncToogleLikeCommentThread(id, commentid));
+      await dispatch(asyncToggleLikeCommentThread(id, commentid));
       dispatch(asyncReceiveThreadDetail(id));
     } else {
-      await dispatch(asyncToogleNeutralCommentThread(id, commentid));
+      await dispatch(asyncToggleNeutralCommentThread(id, commentid));
       dispatch(asyncReceiveThreadDetail(id));
     }
   };
   const onCommentDisLike = async (commentId, isCommentDisLiked) => {
     if (!isCommentDisLiked) {
-      await dispatch(asyncToogleDisLikeCommentThread(id, commentId));
+      await dispatch(asyncToggleDisLikeCommentThread(id, commentId));
       dispatch(asyncReceiveThreadDetail(id));
     } else {
-      await dispatch(asyncToogleNeutralCommentThread(id, commentId));
+      await dispatch(asyncToggleNeutralCommentThread(id, commentId));
       dispatch(asyncReceiveThreadDetail(id));
     }
   };

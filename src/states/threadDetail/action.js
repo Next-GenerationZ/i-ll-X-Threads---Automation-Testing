@@ -80,20 +80,22 @@ function asyncCommentThreadDetail(threadId, content) {
   };
 }
 
-function asyncToogleLikeCommentThread(threadId, commentId) {
+function asyncToggleLikeCommentThread(threadId, commentId) {
   return async (dispatch) => {
     dispatch(showLoading());
-    dispatch(toggleLikeCommentThreadActionCreator({ threadId }));
+    dispatch(toggleLikeCommentThreadActionCreator({ vote: { threadId, commentId } }));
+
 
     try {
       await api.toggleLikeCommentThread(threadId, commentId);
     } catch (error) {
-      dispatch(toggleLikeCommentThreadActionCreator({ threadId }));
+      dispatch(toggleLikeCommentThreadActionCreator({ vote: { threadId, commentId } }));
+
     }
     dispatch(hideLoading());
   };
 }
-function asyncToogleNeutralCommentThread(threadId, commentId) {
+function asyncToggleNeutralCommentThread(threadId, commentId) {
   return async (dispatch) => {
     dispatch(showLoading());
     dispatch(toggleNeutralThreadActionCreator({ threadId, commentId }));
@@ -106,7 +108,7 @@ function asyncToogleNeutralCommentThread(threadId, commentId) {
     dispatch(hideLoading());
   };
 }
-function asyncToogleDisLikeCommentThread(threadId, commentId) {
+function asyncToggleDisLikeCommentThread(threadId, commentId) {
   return async (dispatch) => {
     dispatch(showLoading());
     dispatch(toggleDisLikeCommentThreadActionCreator(threadId, commentId));
@@ -127,7 +129,7 @@ export {
   asyncReceiveThreadDetail,
   addCommentActionCreator,
   asyncCommentThreadDetail,
-  asyncToogleNeutralCommentThread,
-  asyncToogleDisLikeCommentThread,
-  asyncToogleLikeCommentThread,
+  asyncToggleNeutralCommentThread,
+  asyncToggleDisLikeCommentThread,
+  asyncToggleLikeCommentThread,
 };

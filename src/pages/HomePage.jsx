@@ -5,9 +5,9 @@ import dayjs from 'dayjs';
 import parse from 'html-react-parser';
 import { useNavigate } from 'react-router-dom';
 import {
-  asyncToogleDisLikeThread,
-  asyncToogleLikeThread,
-  asyncToogleNeutralThread,
+  asyncToggleDisLikeThread,
+  asyncToggleLikeThread,
+  asyncToggleNeutralThread,
 } from '../states/threads/action';
 import { asyncPopulateUsersAndThreads } from '../states/shared/action';
 
@@ -50,19 +50,19 @@ function HomePage() {
 
   const onLike = (id, isLiked) => {
     if (!isLiked) {
-      dispatch(asyncToogleLikeThread(id));
+      dispatch(asyncToggleLikeThread(id));
       dispatch(asyncPopulateUsersAndThreads());
     } else {
-      dispatch(asyncToogleNeutralThread(id));
+      dispatch(asyncToggleNeutralThread(id));
       dispatch(asyncPopulateUsersAndThreads());
     }
   };
   const onDisLike = (id, isDisLiked) => {
     if (!isDisLiked) {
-      dispatch(asyncToogleDisLikeThread(id));
+      dispatch(asyncToggleDisLikeThread(id));
       dispatch(asyncPopulateUsersAndThreads());
     } else {
-      dispatch(asyncToogleNeutralThread(id));
+      dispatch(asyncToggleNeutralThread(id));
       dispatch(asyncPopulateUsersAndThreads());
     }
   };

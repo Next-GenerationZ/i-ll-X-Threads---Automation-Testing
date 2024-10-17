@@ -12,15 +12,15 @@
  * - Toggle dislike: adds a user to the comment's downVotesBy array when a TOGGLE_COMMENT_DISLIKE_THREAD action is dispatched.
  */
 
-import threadDetailReducer from "./reducer";
-import { ActionType } from "./action";
-import { describe, it, expect } from "vitest";
+import threadDetailReducer from './reducer';
+import { ActionType } from './action';
+import { describe, it, expect } from 'vitest';
 
-describe("threadDetailReducer function", () => {
-  it("should return the initial state when given an unknown action", () => {
+describe('threadDetailReducer function', () => {
+  it('should return the initial state when given an unknown action', () => {
     // arrange
     const initialState = {};
-    const action = { type: "UNKNOWN" };
+    const action = { type: 'UNKNOWN' };
 
     // action
     const nextState = threadDetailReducer(initialState, action);
@@ -29,15 +29,15 @@ describe("threadDetailReducer function", () => {
     expect(nextState).toEqual(initialState);
   });
 
-  it("should return the thread detail when given by RECEIVE_THREAD_DETAIL action", () => {
+  it('should return the thread detail when given by RECEIVE_THREAD_DETAIL action', () => {
     // arrange
     const initialState = {};
     const action = {
       type: ActionType.RECEIVE_THREAD_DETAIL,
       payload: {
         threadDetail: {
-          id: "thread-1",
-          title: "Thread 1",
+          id: 'thread-1',
+          title: 'Thread 1',
           comments: [],
         },
       },
@@ -50,17 +50,17 @@ describe("threadDetailReducer function", () => {
     expect(nextState).toEqual(action.payload.threadDetail);
   });
 
-  it("should return the thread with the new comment when given by ADD_COMMENT action", () => {
+  it('should return the thread with the new comment when given by ADD_COMMENT action', () => {
     // arrange
     const initialState = {
-      id: "thread-1",
-      title: "Thread 1",
+      id: 'thread-1',
+      title: 'Thread 1',
       comments: [],
     };
     const action = {
       type: ActionType.ADD_COMMENT,
       payload: {
-        comment: { id: "comment-1", content: "New comment" },
+        comment: { id: 'comment-1', content: 'New comment' },
       },
     };
 

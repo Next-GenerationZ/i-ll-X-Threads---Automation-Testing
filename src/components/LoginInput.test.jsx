@@ -24,7 +24,7 @@ describe('LoginInput component', () => {
   });
 
   it('should handle email typing correctly', async () => {
-    // Arrange  
+    // Arrange
     render(<LoginInput login={() => {}} />);
     const emailInput = await screen.getByPlaceholderText('Email');
 
@@ -58,7 +58,7 @@ describe('LoginInput component', () => {
     await userEvent.type(passwordInput, 'passwordtest');
 
     const loginButton = await screen.getByRole('button', { name: 'Login' });
-   
+
     await userEvent.click(loginButton);
 
     // Action

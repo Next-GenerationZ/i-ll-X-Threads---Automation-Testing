@@ -1,6 +1,6 @@
-import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
+import { describe, it, beforeEach, expect, vi } from 'vitest';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
-import api from '../../utils/api'; 
+import api from '../../utils/api';
 import {
   asyncAddThread,
   asyncToggleLikeThread,
@@ -39,19 +39,21 @@ describe('Async Actions', () => {
   it('should handle error in asyncToggleLikeThread', async () => {
     const threadId = 'thread123';
 
-    // Mocking api.toggleLikeThread
     api.toggleLikeThread = vi.fn().mockRejectedValue(new Error('Failed to like the thread'));
 
-    const dispatch = vi.fn(); // Mock dispatch
+    const dispatch = vi.fn();
     const thunk = asyncToggleLikeThread(threadId);
 
-    await thunk(dispatch); // Jalankan thunk
+    await thunk(dispatch).catch((error) => {
+      expect(error.message).toBe('Failed to like the thread');
+    });
 
     expect(dispatch).toHaveBeenCalledWith(showLoading());
     expect(dispatch).toHaveBeenCalledWith({
       type: ActionType.TOGGLE_LIKE_THREAD,
-      payload: { vote: { threadId } }, // Payload sesuai dengan yang ada di action creator
+      payload: { vote: { threadId } },
     });
     expect(dispatch).toHaveBeenCalledWith(hideLoading());
   });
+
 });

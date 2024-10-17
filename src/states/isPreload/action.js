@@ -24,8 +24,7 @@ function asyncPreloadProcess() {
       dispatch(setAuthUserActionCreator(authUser));
     } catch (error) {
       dispatch(setAuthUserActionCreator(null));
-      throw new Error(error);
-
+      console.error('Failed to load profile:', error);
     } finally {
       dispatch(setIsPreloadActionCreator(false));
     }

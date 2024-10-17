@@ -90,7 +90,7 @@ function asyncToggleLikeCommentThread(threadId, commentId) {
       await api.toggleLikeCommentThread(threadId, commentId);
     } catch (error) {
       dispatch(toggleLikeCommentThreadActionCreator({ vote: { threadId, commentId } }));
-      throw new Error(error);
+      console.error('Failed to Like Comment:', error);
 
 
     }
@@ -106,7 +106,7 @@ function asyncToggleNeutralCommentThread(threadId, commentId) {
       await api.toggleNeutralCommentThread(threadId, commentId);
     } catch (error) {
       dispatch(toggleNeutralThreadActionCreator({ threadId, commentId }));
-      throw new Error(error);
+      console.error('Failed to Neutral Comment:', error);
 
     }
     dispatch(hideLoading());
@@ -124,7 +124,7 @@ function asyncToggleDisLikeCommentThread(threadId, commentId) {
         toggleDisLikeCommentThreadActionCreator({ threadId, commentId }),
 
       );
-      throw new Error(error);
+      console.error('Failed to DisLike Comment:', error);
     }
     dispatch(hideLoading());
   };

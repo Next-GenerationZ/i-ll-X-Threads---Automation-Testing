@@ -203,7 +203,7 @@ function HomePage() {
                     </p>
                     <p>{displayTime}</p>
                     <p className="thread-item__owner">
-                      Dibuat oleh :
+                      Dibuat oleh:
                       {' '}
                       <strong>{thread?.owner?.name}</strong>
                     </p>

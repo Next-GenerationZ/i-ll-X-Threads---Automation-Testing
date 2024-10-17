@@ -4,14 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode production --host",
+   "dev": "vite --mode production --host",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "npx eslint ./src --ext js,jsx",
     "lint-fix": "npx eslint . --fix.",
     "test": "vitest",
     "e2e": "cypress run",
-    "ci:test": "vitest --no-watch && start-server-and-test dev http-get://0.0.0.0:5173 e2e"
+    "ci:test": "vitest --no-watch && start-server-and-test dev http-get://0.0.0.0:5173 e2e "
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",

@@ -71,6 +71,7 @@ function HomePage() {
     <section className="home-page">
       <header className="home-page__header">
         <p className="home-page__title">Kategori Populer </p>
+        <p className="home-page__title">Kategori Populer </p>
         <div className="categories-list">
           {threads.map((thread) => (
             <button
@@ -203,7 +204,7 @@ function HomePage() {
                     </p>
                     <p>{displayTime}</p>
                     <p className="thread-item__owner">
-                      Dibuat oleh:
+                      Dibuat oleh :
                       {' '}
                       <strong>{thread?.owner?.name}</strong>
                     </p>

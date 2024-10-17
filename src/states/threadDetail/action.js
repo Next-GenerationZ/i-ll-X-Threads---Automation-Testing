@@ -90,6 +90,8 @@ function asyncToggleLikeCommentThread(threadId, commentId) {
       await api.toggleLikeCommentThread(threadId, commentId);
     } catch (error) {
       dispatch(toggleLikeCommentThreadActionCreator({ vote: { threadId, commentId } }));
+      throw new Error(error);
+
 
     }
     dispatch(hideLoading());
@@ -104,6 +106,8 @@ function asyncToggleNeutralCommentThread(threadId, commentId) {
       await api.toggleNeutralCommentThread(threadId, commentId);
     } catch (error) {
       dispatch(toggleNeutralThreadActionCreator({ threadId, commentId }));
+      throw new Error(error);
+
     }
     dispatch(hideLoading());
   };
@@ -118,7 +122,9 @@ function asyncToggleDisLikeCommentThread(threadId, commentId) {
     } catch (error) {
       dispatch(
         toggleDisLikeCommentThreadActionCreator({ threadId, commentId }),
+
       );
+      throw new Error(error);
     }
     dispatch(hideLoading());
   };

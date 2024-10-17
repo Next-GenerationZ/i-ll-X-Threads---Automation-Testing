@@ -24,6 +24,8 @@ function asyncPreloadProcess() {
       dispatch(setAuthUserActionCreator(authUser));
     } catch (error) {
       dispatch(setAuthUserActionCreator(null));
+      throw new Error(error);
+
     } finally {
       dispatch(setIsPreloadActionCreator(false));
     }
